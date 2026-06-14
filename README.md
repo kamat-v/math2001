@@ -60,7 +60,7 @@ the zero-setup [online Lean editor](https://live.lean-lang.org/).
    VS Code.
 2. Clone this repository:
    ```
-   git clone https://github.com/<your-username>/math2001.git
+   git clone https://github.com/kamat-v/math2001.git
    ```
 3. Move into the folder and download the prebuilt mathematics library (this
    avoids a very long from-source compile):
