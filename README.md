@@ -21,15 +21,14 @@ The Lean files corresponding to each chapter of the book are in the folder
 ## About this fork
 
 This is my personal working copy of Dr. Macbeth's materials. I am working
-through the code and exercises from *The Mechanics of Proof* to learn Lean, and
-I keep my own solutions here as I go. It contains no original content of my own beyond worked exercises.
+through the code and exercises from *The Mechanics of Proof* to learn Lean. It contains no original content of my own beyond worked exercises.
 
 ---
 
 ## Getting started
 
 There are two ways to work with these materials. A detailed, beginner-friendly
-setup guide (for both faculty and students) is available separately; the short
+setup guide is available separately; the short
 version is below.
 
 ### Option 1 — In your browser (no installation)
