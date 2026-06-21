@@ -101,25 +101,57 @@ example {x : ℝ} (h : x = 1 ∨ x = 2) : x ^ 2 - 3 * x + 2 = 0 := by
     x ^ 2 - 3 * x + 2 = (1) ^ 2 - 3 * (1) + 2 := by rw[ha]
     _ = 0 := by numbers
   calc
-    x ^ 2 - 3 * x + 2 = ()
+    x ^ 2 - 3 * x + 2 = (2) ^ 2 - 3 * (2) + 2 := by rw[hb]
+    _ = 0 := by numbers
 
 example {t : ℚ} (h : t = -2 ∨ t = 3) : t ^ 2 - t - 6 = 0 := by
-  sorry
+  obtain ha | hb := h
+  calc
+    t ^ 2 - t - 6 = (-2)^2 - (-2) - 6 := by rw[ha]
+    _ = 0 := by numbers
+  calc
+    t ^ 2 - t - 6 = (3)^2 - (3) - 6 := by rw[hb]
+    _ = 0 := by numbers
 
 example {x y : ℝ} (h : x = 2 ∨ y = -2) : x * y + 2 * x = 2 * y + 4 := by
-  sorry
+  obtain ha | hb := h
+  calc
+    x * y + 2 * x = 2 * y + 2 * 2 := by rw[ha]
+    _ = 2 * y + 4 := by ring
+  calc
+    x * y + 2 * x = x * (-2) + 2 * x := by rw[hb]
+    _ = 0 := by ring
+    _ = 2 * (-2) + 4 := by numbers
+    _ = 2 * y + 4 := by rw[hb]
 
 example {s t : ℚ} (h : s = 3 - t) : s + t = 3 ∨ s + t = 5 := by
-  sorry
+  left
+  calc
+    s + t = 3 := by addarith[h]
 
 example {a b : ℚ} (h : a + 2 * b < 0) : b < a / 2 ∨ b < - a / 2 := by
-  sorry
+  right
+  calc
+    b = ((a + 2 * b) - a) / 2 := by ring
+    _ < (0 - a) / 2 := by rel[h]
+    _ = -a/2 := by ring
 
 example {x y : ℝ} (h : y = 2 * x + 1) : x < y / 2 ∨ x > y / 2 := by
-  sorry
+  left
+  calc
+    x = ((2 * x + 1) - 1)/2 := by ring
+    _ = (y-1)/2 := by rw[h]
+    _ = y/2 - 1/2 := by ring
+    _ < (y/2 - 1/2) + 1/2 := by extra
+    _ = y/2 := by ring
 
 example {x : ℝ} (hx : x ^ 2 + 2 * x - 3 = 0) : x = -3 ∨ x = 1 := by
-  sorry
+  have h1:=
+    calc
+      (x + 3)* (x - 1) = x ^ 2 + 2 * x - 3 := by ring
+      _ = 0 := by rw[hx]
+  have h2 := eq_zero_or_eq_zero_of_mul_eq_zero h1
+  obtain ha | hb := h2
 
 example {a b : ℝ} (hab : a ^ 2 + 2 * b ^ 2 = 3 * a * b) : a = b ∨ a = 2 * b := by
   sorry
