@@ -148,25 +148,119 @@ example {x y : ℝ} (h : y = 2 * x + 1) : x < y / 2 ∨ x > y / 2 := by
 example {x : ℝ} (hx : x ^ 2 + 2 * x - 3 = 0) : x = -3 ∨ x = 1 := by
   have h1:=
     calc
-      (x + 3)* (x - 1) = x ^ 2 + 2 * x - 3 := by ring
+      (x + 3) * (x - 1) = x ^ 2 + 2 * x - 3 := by ring
       _ = 0 := by rw[hx]
   have h2 := eq_zero_or_eq_zero_of_mul_eq_zero h1
   obtain ha | hb := h2
+  left
+  calc
+    x = (x + 3) - 3 := by ring
+    _ = 0 - 3 := by rw[ha]
+    _ = -3 := by numbers
+  right
+  calc
+    x = (x - 1) + 1 := by ring
+    _ = 0 + 1 := by rw[hb]
+    _ = 1 := by numbers
+
 
 example {a b : ℝ} (hab : a ^ 2 + 2 * b ^ 2 = 3 * a * b) : a = b ∨ a = 2 * b := by
-  sorry
+  have h1 :=
+    calc
+      (a-b) * (a-2*b) = a^2 + 2*b^2 - 3*a*b := by ring
+      _ = 3*a*b-3*a*b := by rw[hab]
+      _ = 0 := by ring
+  have h2 := eq_zero_or_eq_zero_of_mul_eq_zero h1
+  obtain ha | hb := h2
+  left
+  calc
+    a = (a-b)+b := by ring
+    _ = 0 + b := by rw[ha]
+    _ = b := by ring
+  right
+  calc
+    a = (a - 2*b) + 2*b := by ring
+    _ = 0 + 2*b := by rw[hb]
+    _ = 2*b := by ring
+
+
 
 example {t : ℝ} (ht : t ^ 3 = t ^ 2) : t = 1 ∨ t = 0 := by
-  sorry
+  have h1 :=
+    calc
+      (t - 1) * (t * t) = t ^ 3 - t ^ 2 := by ring
+      _ = t ^ 2 - t ^ 2 := by rw[ht]
+      _ = 0 := by ring
+  have h2 := eq_zero_or_eq_zero_of_mul_eq_zero h1
+  obtain ha | hb := h2
+  left
+  calc
+    t = (t-1)+1 := by ring
+    _ = 0 + 1 := by rw[ha]
+    _ = 1 := by numbers
+  right
+  have h3 := eq_zero_or_eq_zero_of_mul_eq_zero hb
+  obtain hc | hd := h3
+  . exact hc
+  . exact hd
+
 
 example {n : ℕ} : n ^ 2 ≠ 7 := by
-  sorry
+  have h := le_or_succ_le n 2
+  obtain ha | hb := h
+  apply ne_of_lt
+  calc
+    n^2 <= (2)^2 := by rel[ha]
+    _ = 4 := by numbers
+    _ < 4 + 3 := by extra
+    _ = 7 := by numbers
+  apply ne_of_gt
+  calc
+    n^2 >= (3)^2 := by rel[hb]
+    _ = 7 + 2 := by numbers
+    _ > 7 := by extra
+
 
 example {x : ℤ} : 2 * x ≠ 3 := by
-  sorry
+  have h := le_or_succ_le x 1
+  obtain ha | hb := h
+  apply ne_of_lt
+  calc
+    2 * x <= 2 * 1 := by rel[ha]
+    _ = 2 := by numbers
+    _ < 2 + 1 := by extra
+  apply ne_of_gt
+  calc
+    2 * x >= 2 * 2 := by rel[hb]
+    _ = 3 + 1 := by numbers
+    _ > 3 := by extra
 
 example {t : ℤ} : 5 * t ≠ 18 := by
-  sorry
+  have h := le_or_succ_le t 3
+  obtain ha | hb := h
+  apply ne_of_lt
+  calc
+    5 * t <= 5 * 3 := by rel[ha]
+    _ = 15 := by numbers
+    _ < 15 + 3 := by extra
+  apply ne_of_gt
+  calc
+   5 * t >= 5 * 4 := by rel[hb]
+   _ = 18 + 2 := by numbers
+   _ > 18 := by extra
 
 example {m : ℕ} : m ^ 2 + 4 * m ≠ 46 := by
-  sorry
+  have h := le_or_succ_le m 5
+  obtain ha | hb := h
+  apply ne_of_lt
+  calc
+    m ^ 2 + 4 * m = m * (m + 4) := by ring
+    _ <= 5 * (5 + 4) := by rel[ha]
+    _ = 45 := by numbers
+    _ < 45 + 1 := by extra
+  apply ne_of_gt
+  calc
+    m ^ 2 + 4 * m = m * (m + 4) := by ring
+    _ >= 6 * (6 + 4) := by rel[hb]
+    _ = 46 + 14 := by numbers
+    _ > 46 := by extra
