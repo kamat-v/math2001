@@ -151,3 +151,33 @@ example {a b : ℝ} (h1 : a * b = a) (h2 : a * b = b) :
       _ = 0 := by ring
   have h5 := eq_zero_or_eq_zero_of_mul_eq_zero h3
   have h6 := eq_zero_or_eq_zero_of_mul_eq_zero h4
+  obtain h5a | h5b := h5
+  . obtain h6a | h6b := h6
+    . left
+      constructor
+      . exact h5a
+      . exact h6a
+    . right
+      have h6bb : a = 1 := by addarith[h6b]
+      have h5bb : b = 1 := by
+        calc
+          b = (b - 1) + 1 := by ring
+          _ = 1* (b - 1) + 1 := by ring
+          _ = a * (b - 1) + 1 := by rw[h6bb]
+          _ = 0 + 1 := by rw[h3]
+          _ = 1 := by numbers
+      constructor
+      . exact h6bb
+      . exact h5bb
+  . right
+    have h6aa : b = 1 := by addarith[h5b]
+    have h5aa : a = 1 := by
+      calc
+        a = (a - 1) + 1 := by ring
+        _ = 1 * (a - 1) + 1 := by ring
+        _ = b * (a - 1) + 1 := by rw[h6aa]
+        _ = 0 + 1 := by rw[h4]
+        _ = 1 := by numbers
+    constructor
+    . exact h5aa
+    . exact h6aa
