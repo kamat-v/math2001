@@ -111,9 +111,31 @@ example (x : ℚ) : ∃ y : ℚ, y ^ 2 > x := by
 
 example {t : ℝ} (h : ∃ a : ℝ, a * t + 1 < a + t) : t ≠ 1 := by
   obtain ⟨a, ha⟩ := h
-  apply ne_of_lt
-  have H := le_or_gt a 1
-  obtain h1 | h2 := H
+  have haa := by
+    calc
+      (1 - a) * 1 = (1 - a) := by ring
+      _ < t - a * t := by addarith[ha]
+      _ = t * (1 - a) := by ring
+      _ = (1 - a) * t := by ring
+  have H:= le_or_gt a 1
+  obtain hx | hy := H
+  . have hxx : 0 <= (1 - a) := by addarith[hx]
+    cancel (1 - a) at haa
+    apply ne_of_gt
+    apply haa
+  . have hyy : 0 < (a - 1) := by addarith[hy]
+    have haaa := by
+      calc
+        (a - 1) * t = a * t - t := by ring
+        _ < a - 1 := by addarith[ha]
+        _ = (a - 1) * 1 := by ring
+    cancel (a - 1) at haaa
+    apply ne_of_lt
+    apply haaa
+
+
+
+
 
 
 
