@@ -111,9 +111,10 @@ example (x : ℚ) : ∃ y : ℚ, y ^ 2 > x := by
 
 example {t : ℝ} (h : ∃ a : ℝ, a * t + 1 < a + t) : t ≠ 1 := by
   obtain ⟨a, ha⟩ := h
-  have
-    calc
-      t = t * (a - 1) / (a - 1)
+  apply ne_of_lt
+  have H := le_or_gt a 1
+  obtain h1 | h2 := H
+
 
 
 example {m : ℤ} (h : ∃ a, 2 * a = m) : m ≠ 5 := by
@@ -135,6 +136,27 @@ example {m : ℤ} (h : ∃ a, 2 * a = m) : m ≠ 5 := by
       _ > 5 := by extra
 
 example {n : ℤ} : ∃ a, 2 * a ^ 3 ≥ n * a + 7 := by
+  have H := le_or_succ_le n 0
+  obtain ha | hb := H
+  . use 2
+    calc
+      2 * (2 ^ 3) = 9 + 7 := by numbers
+      _ >= (0:ℤ) + (0:ℤ) + 7 := by extra
+      _ >= n + n + 7 := by rel[ha]
+      _ = n * 2 + 7 := by ring
+  . use n + 1
+    have hn : 0 < n := by addarith[hb]
+    calc
+      2 * (n + 1)^ 3 = 2 * n ^ 3 + 6 * n ^ 2 + 6 * n + 2 := by ring
+      _ >= 2 * (1)^3 + 6 * n ^ 2 + 6 * n + 2 := by rel[hb]
+      _ = 6 * n ^ 2 + 6 * n + 4 := by ring
+      _ = n ^ 2 + n + 5 * n ^ 2 + 5 * n + 4 := by ring
+      _ >= n ^ 2 + n + 5 * 1 ^ 2 + 5 * (1) + 4 := by rel[hb]
+      _ = n ^ 2 + n + 14 := by ring
+      _ = n * (n + 1) + 14 := by ring
+      _ = n * (n + 1) + 7 + 7 := by ring
+      _ >= n * (n + 1) + 7 := by extra
+
 
 
 example {a b c : ℝ} (ha : a ≤ b + c) (hb : b ≤ a + c) (hc : c ≤ a + b) :
