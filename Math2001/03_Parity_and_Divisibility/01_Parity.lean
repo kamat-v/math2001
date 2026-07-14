@@ -94,7 +94,13 @@ example : Even (26 : ℤ) := by
   numbers
 
 example {m n : ℤ} (hm : Odd m) (hn : Even n) : Odd (n + m) := by
-  sorry
+  obtain ⟨a, ha⟩ := hm
+  obtain ⟨b, hb⟩ := hn
+  use a + b
+  calc
+    n + m = 2 * b + m := by rw [hb]
+    _ = 2 * b + (2 * a + 1) := by rw[ha]
+    _ = 2 * (b + a) + 1 := by ring
 
 example {p q : ℤ} (hp : Odd p) (hq : Even q) : Odd (p - q - 4) := by
   sorry
