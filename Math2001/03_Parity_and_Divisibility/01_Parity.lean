@@ -96,7 +96,7 @@ example : Even (26 : ℤ) := by
 example {m n : ℤ} (hm : Odd m) (hn : Even n) : Odd (n + m) := by
   obtain ⟨a, ha⟩ := hm
   obtain ⟨b, hb⟩ := hn
-  use a + b
+  use b + a
   calc
     n + m = 2 * b + m := by rw [hb]
     _ = 2 * b + (2 * a + 1) := by rw[ha]
@@ -184,7 +184,40 @@ example (n : ℤ) : Odd (3 * n ^ 2 + 3 * n - 1) := by
 
 
 
-example (n : ℤ) : ∃ m ≥ n, Odd m := by
-  sorry
+example (n : ℤ) : ∃ m ≥ n, Odd (m) := by
+  obtain hne | hno := Int.even_or_odd n
+  . obtain ⟨a, ha⟩ := hne
+    use n + 1
+    constructor
+    . extra
+    . use a
+      rw[ha]
+  . obtain ⟨b, hb⟩ := hno
+    use n + 2
+    constructor
+    . extra
+    . use b + 1
+      calc
+        n + 2 = 2 * b + 1 + 2 := by rw[hb]
+        _ = 2 * (b + 1) + 1 := by ring
+
+
+
+
 example (a b c : ℤ) : Even (a - b) ∨ Even (a + c) ∨ Even (b - c) := by
-  sorry
+  obtain hnabe | hnabo := Int.even_or_odd (a-b)
+  . left
+    apply hnabe
+  . right
+    obtain hnbce | hnbco := Int.even_or_odd (b-c)
+    . right
+      apply hnbce
+    . left
+      obtain ⟨x, habx⟩ := hnabo
+      obtain ⟨y, hbcy⟩ := hnbco
+      use x - y + b
+      calc
+        a + c = (a - b) - (b - c) + 2 * b := by ring
+        _ = (2 * x + 1) - (b - c) + 2 *b := by rw [habx]
+        _ = (2 * x + 1) - (2 * y + 1) + 2 * b := by rw[hbcy]
+        _ = 2 * (x - y + b) := by ring
