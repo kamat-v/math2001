@@ -135,16 +135,37 @@ example {x : ℤ} (hx : Odd x) : Odd (x ^ 3) := by
     _ = 2 * (4 * a ^ 3 + 6 * a ^ 2 + 3 * a) + 1 := by ring
 
 example {n : ℤ} (hn : Odd n) : Even (n ^ 2 - 3 * n + 2) := by
-  sorry
+  obtain ⟨a, ha⟩ := hn
+  use 2 * a ^ 2 - a
+  calc
+    n ^ 2 - 3 * n + 2 = (2 * a + 1) ^ 2 - 3 * (2 * a + 1) + 2 := by rw[ha]
+    _ = 4 * a ^ 2 + 4 * a + 1 - 6 * a - 3 + 2 := by ring
+    _ = 2 * (2 * a ^ 2 - a) := by ring
 
 example {a : ℤ} (ha : Odd a) : Odd (a ^ 2 + 2 * a - 4) := by
-  sorry
+  obtain ⟨x, hx⟩ := ha
+  use 2 * x ^ 2+ 4 * x - 1
+  calc
+    a ^ 2 + 2 * a - 4 = (2 * x + 1) ^ 2 + 2 * (2 * x + 1) - 4 := by rw[hx]
+    _ = 4 * x ^ 2 + 4 * x + 1 + 4 * x + 2 - 4 := by ring
+    _ = 2 * (2 * x ^ 2 + 4 * x - 1) + 1 := by ring
 
 example {p : ℤ} (hp : Odd p) : Odd (p ^ 2 + 3 * p - 5) := by
-  sorry
+  obtain ⟨a, ha⟩ := hp
+  use 2 * a ^ 2 + 5 * a - 1
+  calc
+    p ^ 2 + 3 * p - 5 = (2 * a + 1) ^ 2 + 3 * (2 * a + 1) - 5 := by rw[ha]
+    _ = 4 * a ^ 2 + 4 * a + 1 + 6 * a + 3 - 5 := by ring
+    _ = 2 * (2 * a ^ 2 + 5 * a - 1) + 1 := by ring
 
 example {x y : ℤ} (hx : Odd x) (hy : Odd y) : Odd (x * y) := by
-  sorry
+  obtain ⟨a, ha⟩ := hx
+  obtain ⟨b, hb⟩ := hy
+  use 2 * a * b + a + b
+  calc
+    x * y = (2 * a + 1) * (2 * b + 1) := by rw[ha,hb]
+    _ = 4 * a * b + 2 * a + 2 * b + 1 := by ring
+    _ = 2 * (2 *a * b + a + b) + 1 := by ring
 
 example (n : ℤ) : Odd (3 * n ^ 2 + 3 * n - 1) := by
   sorry
