@@ -1,0 +1,15 @@
+{
+  "name": "Math Reasoning & Proof (Lean)",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "onCreateCommand": "lake exe cache get && lake build",
+  "customizations": {
+    "vscode": {
+      "extensions": ["leanprover.lean4"],
+      "settings": {
+        "editor.wordWrap": "on"
+      }
+    }
+  }
+}
