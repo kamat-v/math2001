@@ -3,7 +3,7 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "onCreateCommand": "lake exe cache get && lake build",
+  "onCreateCommand": "lake exe cache get && (lake build || true)",
   "customizations": {
     "vscode": {
       "extensions": ["leanprover.lean4"],
