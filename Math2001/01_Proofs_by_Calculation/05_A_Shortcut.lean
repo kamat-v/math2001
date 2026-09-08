@@ -20,6 +20,13 @@ example {s t : ℝ} (h : t = 4 - s * t) : t + s * t > 0 := by addarith [h]
 
 example {m n : ℝ} (h1 : m ≤ 8 - n) : 10 > m + n := by addarith [h1]
 
+example {m n : ℝ} (h1 : m ≤ 8 - n) : 10 > m + n :=
+  calc
+    10 = 8 - n + n + 2 := by ring
+    _ >= m + n + 2 := by rel[h1]
+    _ > m + n := by extra
+
+
 
 -- Check that `addarith` can't verify this deduction!
 example {w : ℚ} (h1 : 3 * w + 1 = 4) : w = 1 :=

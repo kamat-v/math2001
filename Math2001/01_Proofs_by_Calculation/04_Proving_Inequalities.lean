@@ -58,6 +58,16 @@ example {t : ℚ} (ht : t ≥ 10) : t ^ 2 - 3 * t - 17 ≥ 5 :=
     _ ≥ 7 * 10 - 17 := by rel[ht]
     _ ≥ 5 := by numbers
 
+example {t : ℚ} (ht : t ≥ 7) : t ^ 2 - 3 * t - 17 > 8 :=
+  calc
+    t ^ 2 - 3 * t - 17
+      = t * t - 3 * t - 17 := by ring
+    _ ≥ 7 * t - 3 * t - 17 := by rel[ht]
+    _ = 4 * t - 17 := by ring
+    _ ≥ 4 * 7 - 17 := by rel[ht]
+    _ ≥ 8 + 1 := by numbers
+    _ > 8 := by extra
+
 -- Example 1.4.6
 -- Exercise: type out the whole proof printed in the text as a Lean proof.
 example {n : ℤ} (hn : n ≥ 5) : n ^ 2 > 2 * n + 11 :=
@@ -87,6 +97,17 @@ example {x y : ℝ} (h : x ^ 2 + y ^ 2 ≤ 1) : (x + y) ^ 2 < 3 :=
 
 -- Example 1.4.9
 -- Exercise: replace the words "sorry" with the correct Lean justification.
+example {a b : ℚ} (h1 : a ≥ 0) (h2 : b ≥ 0) (h3 : a + b ≤ 8) :
+    3 * a * b + a ≤ 7 * b + 72 :=
+  calc
+    3 * a * b + a
+      ≤ 2 * b ^ 2 + a ^ 2 + (3 * a * b + a) := by extra
+    _ = 2 * ((a + b) * b) + (a + b) * a + a := by ring
+    _ ≤ 2 * (8 * b) + 8 * a + a := by rel[h3]
+    _ = 7 * b + 9 * (a + b) := by ring
+    _ ≤ 7 * b + 9 * 8 := by rel[h3]
+    _ = 7 * b + 72 := by ring
+
 example {a b : ℚ} (h1 : a ≥ 0) (h2 : b ≥ 0) (h3 : a + b ≤ 8) :
     3 * a * b + a ≤ 7 * b + 72 :=
   calc
