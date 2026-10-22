@@ -5,6 +5,7 @@ import Library.Basic
 math2001_init
 
 
+
 example {a : ℚ} (h : ∃ b : ℚ, a = b ^ 2 + 1) : a > 0 := by
   obtain ⟨b, hb⟩ := h
   calc
